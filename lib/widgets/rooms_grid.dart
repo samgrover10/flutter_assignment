@@ -22,20 +22,49 @@ class _RoomsGridState extends State<RoomsGrid> {
                 assetName: 'assets/bed.svg',
                 numLights: 4,
                 roomName: 'Bed room')),
-        RoomItem(
-            assetName: 'assets/room.svg',
-            numLights: 2,
-            roomName: 'Living room'),
-        RoomItem(
-            assetName: 'assets/kitchen.svg', numLights: 3, roomName: 'Kitchen'),
-        RoomItem(
-            assetName: 'assets/bathtube.svg',
-            numLights: 2,
-            roomName: 'Bathroom'),
-        RoomItem(
-            assetName: 'assets/house.svg', numLights: 1, roomName: 'Outdoor'),
-        RoomItem(
-            assetName: 'assets/balcony.svg', numLights: 2, roomName: 'Balcony'),
+        GestureDetector(
+          onTap: () {
+            widget.changeUI();
+          },
+          child: RoomItem(
+              assetName: 'assets/room.svg',
+              numLights: 2,
+              roomName: 'Living room'),
+        ),
+        GestureDetector(
+          onTap: () {
+            widget.changeUI();
+          },
+          child: RoomItem(
+              assetName: 'assets/kitchen.svg',
+              numLights: 3,
+              roomName: 'Kitchen'),
+        ),
+        GestureDetector(
+          onTap: () {
+            widget.changeUI();
+          },
+          child: RoomItem(
+              assetName: 'assets/bathtube.svg',
+              numLights: 2,
+              roomName: 'Bathroom'),
+        ),
+        GestureDetector(
+          onTap: () {
+            widget.changeUI();
+          },
+          child: RoomItem(
+              assetName: 'assets/house.svg', numLights: 1, roomName: 'Outdoor'),
+        ),
+        GestureDetector(
+          onTap: () {
+            widget.changeUI();
+          },
+          child: RoomItem(
+              assetName: 'assets/balcony.svg',
+              numLights: 2,
+              roomName: 'Balcony'),
+        ),
       ],
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           childAspectRatio: 1.0,
