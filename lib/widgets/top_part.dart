@@ -5,15 +5,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class TopPart extends StatefulWidget {
   Function backFn;
-  AnimationController animationController;
-  TopPart(this.backFn, this.animationController);
+  Color bulbColor; 
+  TopPart(this.backFn,this.bulbColor);
   @override
   _TopPartState createState() => _TopPartState();
 }
 
 class _TopPartState extends State<TopPart> with SingleTickerProviderStateMixin {
   late final AnimationController slideController =
-      AnimationController(vsync: this, duration: const Duration(seconds: 1));
+      AnimationController(vsync: this, duration: const Duration(milliseconds: 500));
   late final Animation<Offset> slideAnimation;
   @override
   void initState() {
@@ -61,9 +61,10 @@ class _TopPartState extends State<TopPart> with SingleTickerProviderStateMixin {
                               widget.backFn();
                             },
                             child: SvgPicture.asset(
-                                'assets/Icon ionic-md-arrow-round-back.svg'),
+                                'assets/Icon ionic-md-arrow-round-back.svg',),
+                                
                           ),
-                          const SizedBox(width: 15),
+                          const SizedBox(width: 20),
                           const Expanded(
                             child: AutoSizeText(
                               'Bed Room',
@@ -90,7 +91,13 @@ class _TopPartState extends State<TopPart> with SingleTickerProviderStateMixin {
                     ],
                   ),
                 ),
-                SvgPicture.asset('assets/light bulb.svg'),
+                Stack(children: [
+                  SvgPicture.asset(
+                    'assets/light bulb.svg',
+                    color: widget.bulbColor,
+                  ),
+                  SvgPicture.asset('assets/Group 38.svg')
+                ]),
               ],
             ),
           ),

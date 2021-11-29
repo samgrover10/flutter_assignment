@@ -16,11 +16,13 @@ class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin, TickerProviderStateMixin {
   bool roomSelected = false;
   double brightness = 1.0;
+  Color bulbColor = Colors.black;
+
   late final AnimationController _slideAnimationController =
       AnimationController(
-          vsync: this, duration: const Duration(milliseconds: 1000));
+          vsync: this, duration: const Duration(milliseconds: 500));
   late final AnimationController _fadeAnimationController = AnimationController(
-      vsync: this, duration: const Duration(milliseconds: 1000));
+      vsync: this, duration: const Duration(milliseconds: 500));
   late final Animation<Offset> _slideAnimation =
       Tween<Offset>(begin: const Offset(-2.5, 0), end: Offset.zero).animate(
           CurvedAnimation(
@@ -59,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen>
               height: roomSelected
                   ? MediaQuery.of(context).size.height * 0.3
                   : MediaQuery.of(context).size.height * 0.2,
-              duration: const Duration(seconds: 1),
+              duration: const Duration(milliseconds: 500),
               child: !roomSelected
                   ? Container(
                       margin: const EdgeInsets.only(top: 50),
@@ -92,216 +94,290 @@ class _HomeScreenState extends State<HomeScreen>
                         ],
                       ),
                     )
-                  : TopPart(backButtonPressed, _slideAnimationController),
+                  : TopPart(
+                      backButtonPressed, bulbColor.withOpacity(brightness)),
             ),
             const SizedBox(height: 30),
             Expanded(
-              child: AnimatedContainer(
-                width: MediaQuery.of(context).size.width,
-                height: roomSelected
-                    ? MediaQuery.of(context).size.height * 0.6
-                    : MediaQuery.of(context).size.height * 0.8,
-                padding: const EdgeInsets.all(30),
-                decoration: const BoxDecoration(
-                    color: Color(0xffF6F8FB),
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30))),
-                duration: const Duration(seconds: 1),
-                child: !roomSelected
-                    ? Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const AutoSizeText(
-                            "All Rooms",
-                            minFontSize: 18.0,
-                            maxLines: 1,
-                            style: TextStyle(
-                                color: Color(0xff002D67),
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Expanded(
-                              child: FadeTransition(
-                                  opacity: _fadeAnimation2,
-                                  child: RoomsGrid(changeUI))),
-                        ],
-                      )
-                    : Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Intensity',
-                            style: TextStyle(
-                                fontSize: 18.0,
-                                color: Color(0xff002D67),
-                                fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Row(
-                            children: [
-                              SvgPicture.asset(
-                                'assets/solution1.svg',
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                child: FadeTransition(
-                                  opacity: _fadeAnimation,
-                                  child: CupertinoSlider(
-                                      // inactiveColor: const Color(0xffCFD0D0),
-                                      activeColor: const Color(0xffFFD239),
-                                      min: 0,
-                                      max: 1.0,
-                                      divisions: 6,
-                                      value: brightness,
-                                      onChanged: (brightnessFrac) {
-                                        setState(() {
-                                          brightness = brightnessFrac;
-                                        });
-                                      }),
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              SvgPicture.asset(
-                                'assets/solution.svg',
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const Text(
-                            'Colors',
-                            style: TextStyle(
-                                fontSize: 18.0,
-                                color: Color(0xff002D67),
-                                fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              SlideTransition(
-                                position: _slideAnimation,
-                                child: CircleAvatar(
-                                  backgroundColor: _colors[0],
-                                  radius: 15,
-                                ),
-                              ),
-                              SlideTransition(
-                                position: _slideAnimation,
-                                child: CircleAvatar(
-                                  backgroundColor: _colors[1],
-                                  radius: 15,
-                                ),
-                              ),
-                              SlideTransition(
-                                position: _slideAnimation,
-                                child: CircleAvatar(
-                                  backgroundColor: _colors[2],
-                                  radius: 15,
-                                ),
-                              ),
-                              SlideTransition(
-                                position: _slideAnimation,
-                                child: CircleAvatar(
-                                  backgroundColor: _colors[3],
-                                  radius: 15,
-                                ),
-                              ),
-                              SlideTransition(
-                                position: _slideAnimation,
-                                child: CircleAvatar(
-                                  backgroundColor: _colors[4],
-                                  radius: 15,
-                                ),
-                              ),
-                              SlideTransition(
-                                position: _slideAnimation,
-                                child: CircleAvatar(
-                                  backgroundColor: _colors[5],
-                                  radius: 15,
-                                ),
-                              ),
-                              SlideTransition(
-                                position: _slideAnimation,
-                                child: CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  child: IconButton(
-                                    icon: SvgPicture.asset(
-                                      'assets/+.svg',
-                                      fit: BoxFit.cover,
-                                    ),
-                                    onPressed: () {},
-                                  ),
-                                  radius: 15,
-                                ),
-                              )
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const Text(
-                            'Scenes',
-                            style: TextStyle(
-                                fontSize: 18.0,
-                                color: Color(0xff002D67),
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Expanded(
-                            child: FadeTransition(
-                              opacity: _fadeAnimation,
-                              child: GridView(
-                                physics: const BouncingScrollPhysics(),
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2,
-                                        childAspectRatio: 1.7,
-                                        crossAxisSpacing:
-                                            MediaQuery.of(context).size.width *
-                                                0.08,
-                                        mainAxisSpacing:
-                                            MediaQuery.of(context).size.height *
-                                                0.05),
-                                children: [
-                                  SceneItem(
-                                      'assets/surface2.svg',
-                                      const Color(0xffFF9B9B),
-                                      const Color(0xffFFB793),
-                                      'Birthday'),
-                                  SceneItem(
-                                      'assets/surface2.svg',
-                                      const Color(0xffAA93EB),
-                                      const Color(0xffD193EB),
-                                      'Party'),
-                                  SceneItem(
-                                      'assets/surface2.svg',
-                                      const Color(0xff93CCEB),
-                                      const Color(0xff93D9EB),
-                                      'Relax'),
-                                  SceneItem(
-                                      'assets/surface2.svg',
-                                      const Color(0xff8ADD94),
-                                      const Color(0xffB5E992),
-                                      'Fun'),
-                                ],
-                              ),
+              child: Stack(children: [
+                AnimatedContainer(
+                  width: MediaQuery.of(context).size.width,
+                  height: roomSelected
+                      ? MediaQuery.of(context).size.height * 0.6
+                      : MediaQuery.of(context).size.height * 0.8,
+                  padding: const EdgeInsets.all(30),
+                  decoration: const BoxDecoration(
+                      color: Color(0xffF6F8FB),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          topRight: Radius.circular(30))),
+                  duration: const Duration(milliseconds: 500),
+                  child: !roomSelected
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const AutoSizeText(
+                              "All Rooms",
+                              minFontSize: 18.0,
+                              maxLines: 1,
+                              style: TextStyle(
+                                  color: Color(0xff002D67),
+                                  fontWeight: FontWeight.bold),
                             ),
-                          )
-                        ],
-                      ),
-              ),
+                            Expanded(
+                                child: FadeTransition(
+                                    opacity: _fadeAnimation2,
+                                    child: RoomsGrid(changeUI))),
+                          ],
+                        )
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Intensity',
+                              style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: Color(0xff002D67),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/solution1.svg',
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  child: FadeTransition(
+                                    opacity: _fadeAnimation,
+                                    child: CupertinoSlider(
+                                        // inactiveColor: const Color(0xffCFD0D0),
+                                        activeColor: const Color(0xffFFD239),
+                                        min: 0,
+                                        max: 1.0,
+                                        value: brightness,
+                                        onChanged: (brightnessFrac){
+                                            setState(() {
+                                            brightness = brightnessFrac;
+                                          });
+                                        },
+                                  ),
+                                ),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                SvgPicture.asset(
+                                  'assets/solution.svg',
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            const Text(
+                              'Colors',
+                              style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: Color(0xff002D67),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                SlideTransition(
+                                  position: _slideAnimation,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        bulbColor = _colors[0];
+                                      });
+                                    },
+                                    child: CircleAvatar(
+                                      backgroundColor: _colors[0],
+                                      radius: 15,
+                                    ),
+                                  ),
+                                ),
+                                SlideTransition(
+                                  position: _slideAnimation,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        bulbColor = _colors[1];
+                                      });
+                                    },
+                                    child: CircleAvatar(
+                                      backgroundColor: _colors[1],
+                                      radius: 15,
+                                    ),
+                                  ),
+                                ),
+                                SlideTransition(
+                                  position: _slideAnimation,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        bulbColor = _colors[2];
+                                      });
+                                    },
+                                    child: CircleAvatar(
+                                      backgroundColor: _colors[2],
+                                      radius: 15,
+                                    ),
+                                  ),
+                                ),
+                                SlideTransition(
+                                  position: _slideAnimation,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        bulbColor = _colors[3];
+                                      });
+                                    },
+                                    child: CircleAvatar(
+                                      backgroundColor: _colors[3],
+                                      radius: 15,
+                                    ),
+                                  ),
+                                ),
+                                SlideTransition(
+                                  position: _slideAnimation,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        bulbColor = _colors[4];
+                                      });
+                                    },
+                                    child: CircleAvatar(
+                                      backgroundColor: _colors[4],
+                                      radius: 15,
+                                    ),
+                                  ),
+                                ),
+                                SlideTransition(
+                                  position: _slideAnimation,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        bulbColor = _colors[5];
+                                      });
+                                    },
+                                    child: CircleAvatar(
+                                      backgroundColor: _colors[5],
+                                      radius: 15,
+                                    ),
+                                  ),
+                                ),
+                                SlideTransition(
+                                  position: _slideAnimation,
+                                  child: CircleAvatar(
+                                    backgroundColor: Colors.white,
+                                    child: IconButton(
+                                      icon: SvgPicture.asset(
+                                        'assets/+.svg',
+                                        fit: BoxFit.cover,
+                                      ),
+                                      onPressed: () {},
+                                    ),
+                                    radius: 15,
+                                  ),
+                                )
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            const Text(
+                              'Scenes',
+                              style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: Color(0xff002D67),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Expanded(
+                              child: FadeTransition(
+                                opacity: _fadeAnimation,
+                                child: GridView(
+                                  physics: const BouncingScrollPhysics(),
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 2,
+                                          childAspectRatio: 1.7,
+                                          crossAxisSpacing:
+                                              MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.08,
+                                          mainAxisSpacing:
+                                              MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.05),
+                                  children: [
+                                    SceneItem(
+                                        'assets/surface2.svg',
+                                        const Color(0xffFF9B9B),
+                                        const Color(0xffFFB793),
+                                        'Birthday'),
+                                    SceneItem(
+                                        'assets/surface2.svg',
+                                        const Color(0xffAA93EB),
+                                        const Color(0xffD193EB),
+                                        'Party'),
+                                    SceneItem(
+                                        'assets/surface2.svg',
+                                        const Color(0xff93CCEB),
+                                        const Color(0xff93D9EB),
+                                        'Relax'),
+                                    SceneItem(
+                                        'assets/surface2.svg',
+                                        const Color(0xff8ADD94),
+                                        const Color(0xffB5E992),
+                                        'Fun'),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                ),
+                roomSelected
+                    ? Align(
+                        // right: MediaQuery.of(context).size.width*0.1,
+                        // bottom: MediaQuery.of(context).size.height*0.7,
+                        // left: MediaQuery.of(context).size.width*0.9 ,
+                        alignment: Alignment.topRight,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                bulbColor = bulbColor != Colors.black
+                                    ? Colors.black
+                                    : Colors.yellow;
+                              });
+                            },
+                            child: CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 20.0,
+                              child: SvgPicture.asset(
+                                  'assets/Icon awesome-power-off.svg'),
+                            ),
+                          ),
+                        ))
+                    : Container()
+              ]),
             )
           ],
         ));
